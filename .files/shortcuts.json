@@ -1,0 +1,848 @@
+[
+  {
+    "name": "Debian",
+    "types": [
+      {
+        "name": "Custom shortcuts",
+        "shortcuts": [
+          {
+            "key": "Alt + E",
+            "description": "Open extensions, test"
+          },
+          {
+            "key": "Alt + G",
+            "description": "Open gnome shortcuts"
+          },
+          {
+            "key": "Alt + J",
+            "description": "Open json shortcuts"
+          },
+          {
+            "key": "Alt + R",
+            "description": "Open research folder"
+          },
+          {
+            "key": "Alt + T",
+            "description": "Open terminal"
+          },
+          {
+            "key": "Alt + V",
+            "description": "Open vscode"
+          },
+          {
+            "key": "Alt + W",
+            "description": "Turn off the screen"
+          },
+          {
+            "key": "Ctrl + Alt + J",
+            "description": "Open shortcuts folder"
+          }
+        ]
+      },
+      {
+        "name": "Launchers",
+        "shortcuts": [
+          {
+            "key": "Alt + H",
+            "description": "Home folder"
+          },
+          {
+            "key": "Ctrl + Alt + 5",
+            "description": "Calculator"
+          },
+          {
+            "key": "Ctrl + Alt + S",
+            "description": "Settings"
+          },
+          {
+            "key": "Shift + Alt + B",
+            "description": "Web browser"
+          },
+          {
+            "key": "Shift + Alt + F",
+            "description": "Search"
+          }
+        ]
+      },
+      {
+        "name": "Navigation",
+        "shortcuts": [
+          {
+            "key": "Ctrl + Alt + D",
+            "description": "Hide all normal windows"
+          },
+          {
+            "key": "Shift + Super + End",
+            "description": "Move window to last workspace"
+          },
+          {
+            "key": "Shift + Super + Home",
+            "description": "Move window to workspace 1"
+          },
+          {
+            "key": "Shift + Super + Pgdn",
+            "description": "Move window one workspace down"
+          },
+          {
+            "key": "Shift + Super + Pgup",
+            "description": "Move window one workspace up"
+          },
+          {
+            "key": "Super + `",
+            "description": "Switch windows of an application"
+          },
+          {
+            "key": "Super + End",
+            "description": "Switch to last workspace"
+          },
+          {
+            "key": "Super + Home",
+            "description": "Switch to workspace 1"
+          },
+          {
+            "key": "Super + Pgdn",
+            "description": "Move to workspace below"
+          },
+          {
+            "key": "Super + Pgup",
+            "description": "Move to workspace above"
+          },
+          {
+            "key": "Super + Tab",
+            "description": "Switch applications"
+          },
+          {
+            "key": "Super + W",
+            "description": "Switch windows"
+          }
+        ]
+      },
+      {
+        "name": "Other shortcuts",
+        "shortcuts": [
+          {
+            "key": "Ctrl + Shift + T",
+            "description": "Reopen last closed tab in browser"
+          },
+          {
+            "key": "Ctrl + T",
+            "description": "Opens new tab in browser"
+          }
+        ]
+      },
+      {
+        "name": "Screenshot",
+        "shortcuts": [
+          {
+            "key": "Alt + Print",
+            "description": "Save a screenshot of a window to slimane"
+          },
+          {
+            "key": "Ctrl + Print",
+            "description": "Copy a screenshot to clipboard"
+          },
+          {
+            "key": "Print",
+            "description": "Save a screenshot to slimane"
+          },
+          {
+            "key": "Shift + Ctrl + Print",
+            "description": "Copy a screenshot of an area to clipboard"
+          },
+          {
+            "key": "Shift + Print",
+            "description": "Save a screenshot of an area to slimane"
+          }
+        ]
+      },
+      {
+        "name": "Sound and media",
+        "shortcuts": [
+          {
+            "key": "Audiomicmute",
+            "description": "Microphone mute / unmute"
+          },
+          {
+            "key": "Audiomute",
+            "description": "Volume mute / unmute"
+          },
+          {
+            "key": "Volumedown",
+            "description": "Volume down"
+          },
+          {
+            "key": "Volumeup",
+            "description": "Volume up"
+          }
+        ]
+      },
+      {
+        "name": "System",
+        "shortcuts": [
+          {
+            "key": "Alt + F2",
+            "description": "Show the run command prompt"
+          },
+          {
+            "key": "Ctrl + Alt + Del",
+            "description": "Log out"
+          },
+          {
+            "key": "Super",
+            "description": "Show the overview"
+          },
+          {
+            "key": "Super + A",
+            "description": "Show all applications"
+          },
+          {
+            "key": "Super + F10",
+            "description": "Open the application menu"
+          },
+          {
+            "key": "Super + L",
+            "description": "Lock screen"
+          },
+          {
+            "key": "Super + V",
+            "description": "Show the notification list"
+          }
+        ]
+      },
+      {
+        "name": "Windows",
+        "shortcuts": [
+          {
+            "key": "Alt + F10",
+            "description": "Toggle maximization state"
+          },
+          {
+            "key": "Alt + F4",
+            "description": "Close window"
+          },
+          {
+            "key": "Alt + F7",
+            "description": "Move window"
+          },
+          {
+            "key": "Alt + F8",
+            "description": "Resize window"
+          },
+          {
+            "key": "Alt + Space",
+            "description": "Activate the window menu"
+          },
+          {
+            "key": "Ctrl + Shift + F",
+            "description": "Toggle fullscreen mode"
+          },
+          {
+            "key": "Shift + Super + →",
+            "description": "Maximize window horizontally"
+          },
+          {
+            "key": "Shift + Super + ↑",
+            "description": "Maximize window vertically"
+          },
+          {
+            "key": "Super + ←",
+            "description": "View split on left"
+          },
+          {
+            "key": "Super + →",
+            "description": "View split on right"
+          },
+          {
+            "key": "Super + ↑",
+            "description": "Maximize window"
+          },
+          {
+            "key": "Super + ↓",
+            "description": "Restore window"
+          },
+          {
+            "key": "Super + H",
+            "description": "Hide window"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Terminal",
+    "types": [
+      {
+        "name": "Cursor Movement",
+        "shortcuts": [
+          { "key": "Ctrl + A", "description": "Move to start of line" },
+          { "key": "Ctrl + E", "description": "Move to end of line" },
+          { "key": "Ctrl + B", "description": "Move backward one character" },
+          { "key": "Ctrl + F", "description": "Move forward one character" },
+          { "key": "Alt + B",  "description": "Move backward one word" },
+          { "key": "Alt + F",  "description": "Move forward one word" }
+        ]
+      },
+      {
+        "name": "Deleting / Killing Text",
+        "shortcuts": [
+          { "key": "Ctrl + U", "description": "Kill (cut) from cursor to line start" },
+          { "key": "Ctrl + K", "description": "Kill (cut) from cursor to line end" },
+          { "key": "Ctrl + W", "description": "Kill (cut) previous word" },
+          { "key": "Alt + D",  "description": "Kill (cut) next word" },
+          { "key": "Ctrl + D", "description": "Delete single character under cursor" },
+          { "key": "Ctrl + Y", "description": "Paste last killed text" }
+        ]
+      },
+      {
+        "name": "Command-Line History",
+        "shortcuts": [
+          { "key": "Ctrl + P", "description": "Previous command" },
+          { "key": "Ctrl + N", "description": "Next command" },
+          { "key": "Ctrl + R", "description": "Search backward in history" },
+          { "key": "Ctrl + S", "description": "Search forward in history" }
+        ]
+      },
+      {
+        "name": "Transpose / Change Case",
+        "shortcuts": [
+          { "key": "Alt + U", "description": "Uppercase word" },
+          { "key": "Alt + L", "description": "Lowercase word" },
+          { "key": "Alt + C", "description": "Capitalize word" }
+        ]
+      },
+      {
+        "name": "Process Control & Misc",
+        "shortcuts": [
+          { "key": "Ctrl + L", "description": "Clear entire screen (and buffer)" },
+          { "key": "Ctrl + C", "description": "Interrupt current command" },
+          { "key": "Ctrl + D", "description": "Quit shell / logout" },
+          { "key": "Ctrl + Z", "description": "Suspend job (bg'd or fg command)" }
+        ]
+      }
+    ]    
+  },
+  {
+    "name": "Vs code",
+    "types": [
+      {
+        "name": "General",
+        "shortcuts": [
+          {
+            "key": "Ctrl+Shift+P, F1",
+            "description": "Show Command Palette"
+          },
+          {
+            "key": "Ctrl+P",
+            "description": "Quick Open, Go to File..."
+          },
+          {
+            "key": "Ctrl+Shift+N",
+            "description": "New window/instance"
+          },
+          {
+            "key": "Ctrl+W",
+            "description": "Close window/instance"
+          },
+          {
+            "key": "Ctrl+,",
+            "description": "User Settings"
+          },
+          {
+            "key": "Ctrl+K Ctrl+S",
+            "description": "Keyboard Shortcuts"
+          }
+        ]
+      },
+      {
+        "name": "Basic editing",
+        "shortcuts": [
+          {
+            "key": "Ctrl+X",
+            "description": "Cut line (empty selection)"
+          },
+          {
+            "key": "Ctrl+C",
+            "description": "Copy line (empty selection)"
+          },
+          {
+            "key": "Alt + ↓ / ↑",
+            "description": "Move line down/up"
+          },
+          {
+            "key": "Ctrl+Shift+K",
+            "description": "Delete line"
+          },
+          {
+            "key": "Ctrl+Enter / Ctrl+Shift+Enter",
+            "description": "Insert line below/ above"
+          },
+          {
+            "key": "Ctrl+Shift+\\",
+            "description": "Jump to matching bracket"
+          },
+          {
+            "key": "Ctrl+] / Ctrl+[",
+            "description": "Indent/Outdent line"
+          },
+          {
+            "key": "Home / End",
+            "description": "Go to beginning/end of line"
+          },
+          {
+            "key": "Ctrl+ Home / End",
+            "description": "Go to beginning/end of file"
+          },
+          {
+            "key": "Ctrl + ↑ / ↓",
+            "description": "Scroll line up/down"
+          },
+          {
+            "key": "Alt+ PgUp / PgDn",
+            "description": "Scroll page up/down"
+          },
+          {
+            "key": "Ctrl+Shift+ [  /  ]",
+            "description": "Fold/unfold region"
+          },
+          {
+            "key": "Ctrl+K Ctrl+ [  /  ]",
+            "description": "Fold/unfold all subregions"
+          },
+          {
+            "key": "Ctrl+K Ctrl+0 / Ctrl+K Ctrl+J",
+            "description": "Fold/Unfold all regions"
+          },
+          {
+            "key": "Ctrl+K Ctrl+C",
+            "description": "Add line comment"
+          },
+          {
+            "key": "Ctrl+K Ctrl+U",
+            "description": "Remove line comment"
+          },
+          {
+            "key": "Ctrl+/",
+            "description": "Toggle line comment"
+          },
+          {
+            "key": "Ctrl+Shift+A",
+            "description": "Toggle block comment"
+          },
+          {
+            "key": "Alt+Z",
+            "description": "Toggle word wrap"
+          }
+        ]
+      },
+      {
+        "name": "Rich languages editing",
+        "shortcuts": [
+          {
+            "key": "Ctrl+Space, Ctrl+I",
+            "description": "Trigger suggestion"
+          },
+          {
+            "key": "Ctrl+Shift+Space",
+            "description": "Trigger parameter hints"
+          },
+          {
+            "key": "Ctrl+Shift+I",
+            "description": "Format document"
+          },
+          {
+            "key": "Ctrl+K Ctrl+F",
+            "description": "Format selection"
+          },
+          {
+            "key": "F12",
+            "description": "Go to Definition"
+          },
+          {
+            "key": "Ctrl+Shift+F10",
+            "description": "Peek Definition"
+          },
+          {
+            "key": "Ctrl+K F12",
+            "description": "Open Definition to the side"
+          },
+          {
+            "key": "Ctrl+.",
+            "description": "Quick Fix"
+          },
+          {
+            "key": "Shift+F12",
+            "description": "Show References"
+          },
+          {
+            "key": "F2",
+            "description": "Rename Symbol"
+          },
+          {
+            "key": "Ctrl+K Ctrl+X",
+            "description": "Trim trailing whitespace"
+          },
+          {
+            "key": "Ctrl+K M",
+            "description": "Change file language"
+          }
+        ]
+      },
+      {
+        "name": "Multi-cursor and selection",
+        "shortcuts": [
+          {
+            "key": "Alt+Click",
+            "description": "Insert cursor*"
+          },
+          {
+            "key": "Shift + Alt + ↑ / ↓",
+            "description": "Insert cursor above/below"
+          },
+          {
+            "key": "Ctrl+U",
+            "description": "Undo last cursor operation"
+          },
+          {
+            "key": "Shift+Alt+I",
+            "description": "Insert cursor at end of each line selected"
+          },
+          {
+            "key": "Ctrl+L",
+            "description": "Select current line"
+          },
+          {
+            "key": "Ctrl+Shift+L",
+            "description": "Select all occurrences of current selection"
+          },
+          {
+            "key": "Ctrl+F2",
+            "description": "Select all occurrences of current word"
+          },
+          {
+            "key": "Shift+Alt + →",
+            "description": "Expand selection"
+          },
+          {
+            "key": "Shift+Alt + ←",
+            "description": "Shrink selection"
+          },
+          {
+            "key": "Shift+Alt + drag mouse",
+            "description": "Column (box) selection"
+          }
+        ]
+      },
+      {
+        "name": "Display",
+        "shortcuts": [
+          {
+            "key": "F11",
+            "description": "Toggle full screen"
+          },
+          {
+            "key": "Shift+Alt+0",
+            "description": "Toggle editor layout (horizontal/vertical)"
+          },
+          {
+            "key": "Ctrl+ = / -",
+            "description": "Zoom in/out"
+          },
+          {
+            "key": "Ctrl+B",
+            "description": "Toggle Sidebar visibility"
+          },
+          {
+            "key": "Ctrl+Shift+E",
+            "description": "Show Explorer / Toggle focus"
+          },
+          {
+            "key": "Ctrl+Shift+F",
+            "description": "Show Search"
+          },
+          {
+            "key": "Ctrl+Shift+G",
+            "description": "Show Source Control"
+          },
+          {
+            "key": "Ctrl+Shift+D",
+            "description": "Show Debug"
+          },
+          {
+            "key": "Ctrl+Shift+X",
+            "description": "Show Extensions"
+          },
+          {
+            "key": "Ctrl+Shift+H",
+            "description": "Replace in files"
+          },
+          {
+            "key": "Ctrl+Shift+J",
+            "description": "Toggle Search details"
+          },
+          {
+            "key": "Ctrl+Shift+C",
+            "description": "Open new command prompt/terminal"
+          },
+          {
+            "key": "Ctrl+K Ctrl+H",
+            "description": "Show Output panel"
+          },
+          {
+            "key": "Ctrl+Shift+V",
+            "description": "Open Markdown preview"
+          },
+          {
+            "key": "Ctrl+K V",
+            "description": "Open Markdown preview to the side"
+          },
+          {
+            "key": "Ctrl+K Z",
+            "description": "Zen Mode (Esc Esc to exit)"
+          }
+        ]
+      },
+      {
+        "name": "Search and replace",
+        "shortcuts": [
+          {
+            "key": "Ctrl+F",
+            "description": "Find"
+          },
+          {
+            "key": "Ctrl+H",
+            "description": "Replace"
+          },
+          {
+            "key": "F3 / Shift+F3",
+            "description": "Find next/previous"
+          },
+          {
+            "key": "Alt+Enter",
+            "description": "Select all occurrences of Find match"
+          },
+          {
+            "key": "Ctrl+D",
+            "description": "Add selection to next Find match"
+          },
+          {
+            "key": "Ctrl+K Ctrl+D",
+            "description": "Move last selection to next Find match"
+          }
+        ]
+      },
+      {
+        "name": "Navigation",
+        "shortcuts": [
+          {
+            "key": "Ctrl+T",
+            "description": "Show all Symbols"
+          },
+          {
+            "key": "Ctrl+G",
+            "description": "Go to Line..."
+          },
+          {
+            "key": "Ctrl+P",
+            "description": "Go to File..."
+          },
+          {
+            "key": "Ctrl+Shift+O",
+            "description": "Go to Symbol..."
+          },
+          {
+            "key": "Ctrl+Shift+M",
+            "description": "Show Problems panel"
+          },
+          {
+            "key": "F8",
+            "description": "Go to next error or warning"
+          },
+          {
+            "key": "Shift+F8",
+            "description": "Go to previous error or warning"
+          },
+          {
+            "key": "Ctrl+Shift+Tab",
+            "description": "Navigate editor group history"
+          },
+          {
+            "key": "Ctrl+Alt+-",
+            "description": "Go back"
+          },
+          {
+            "key": "Ctrl+Shift+-",
+            "description": "Go forward"
+          },
+          {
+            "key": "Ctrl+M",
+            "description": "Toggle Tab moves focus"
+          }
+        ]
+      },
+      {
+        "name": "Editor management",
+        "shortcuts": [
+          {
+            "key": "Ctrl+W",
+            "description": "Close editor"
+          },
+          {
+            "key": "Ctrl+K F",
+            "description": "Close folder"
+          },
+          {
+            "key": "Ctrl+\\",
+            "description": "Split editor"
+          },
+          {
+            "key": "Ctrl+ 1 / 2 / 3",
+            "description": "Focus into 1st, 2nd, 3rd editor group"
+          },
+          {
+            "key": "Ctrl+K Ctrl + ←",
+            "description": "Focus into previous editor group"
+          },
+          {
+            "key": "Ctrl+K Ctrl + →",
+            "description": "Focus into next editor group"
+          },
+          {
+            "key": "Ctrl+Shift+PgUp",
+            "description": "Move editor left"
+          },
+          {
+            "key": "Ctrl+Shift+PgDn",
+            "description": "Move editor right"
+          },
+          {
+            "key": "Ctrl+K ←",
+            "description": "Move active editor group left/up"
+          },
+          {
+            "key": "Ctrl+K →",
+            "description": "Move active editor group right/down"
+          }
+        ]
+      },
+      {
+        "name": "File management",
+        "shortcuts": [
+          {
+            "key": "Ctrl+N",
+            "description": "New File"
+          },
+          {
+            "key": "Ctrl+O",
+            "description": "Open File..."
+          },
+          {
+            "key": "Ctrl+S",
+            "description": "Save"
+          },
+          {
+            "key": "Ctrl+Shift+S",
+            "description": "Save As..."
+          },
+          {
+            "key": "Ctrl+W",
+            "description": "Close"
+          },
+          {
+            "key": "Ctrl+K Ctrl+W",
+            "description": "Close All"
+          },
+          {
+            "key": "Ctrl+Shift+T",
+            "description": "Reopen closed editor"
+          },
+          {
+            "key": "Ctrl+K Enter",
+            "description": "Keep preview mode editor open"
+          },
+          {
+            "key": "Ctrl+Tab",
+            "description": "Open next"
+          },
+          {
+            "key": "Ctrl+Shift+Tab",
+            "description": "Open previous"
+          },
+          {
+            "key": "Ctrl+K P",
+            "description": "Copy path of active file"
+          },
+          {
+            "key": "Ctrl+K R",
+            "description": "Reveal active file in Explorer"
+          },
+          {
+            "key": "Ctrl+K O",
+            "description": "Show active file in new window/instance"
+          }
+        ]
+      },
+      {
+        "name": "Debug",
+        "shortcuts": [
+          {
+            "key": "F9",
+            "description": "Toggle breakpoint"
+          },
+          {
+            "key": "F5",
+            "description": "Start / Continue"
+          },
+          {
+            "key": "F11 / Shift+F11",
+            "description": "Step into/out"
+          },
+          {
+            "key": "F10",
+            "description": "Step over"
+          },
+          {
+            "key": "Shift+F5",
+            "description": "Stop"
+          },
+          {
+            "key": "Ctrl+K Ctrl+I",
+            "description": "Show hover"
+          }
+        ]
+      },
+      {
+        "name": "Integrated terminal",
+        "shortcuts": [
+          {
+            "key": "Ctrl+`",
+            "description": "Show integrated terminal"
+          },
+          {
+            "key": "Ctrl+Shift+`",
+            "description": "Create new terminal"
+          },
+          {
+            "key": "Ctrl+Shift+C",
+            "description": "Copy selection"
+          },
+          {
+            "key": "Ctrl+Shift+V",
+            "description": "Paste into active terminal"
+          },
+          {
+            "key": "Ctrl+Shift+ ↑ / ↓",
+            "description": "Scroll up/down"
+          },
+          {
+            "key": "Shift+ PgUp / PgDn",
+            "description": "Scroll page up/down"
+          },
+          {
+            "key": "Shift+ Home / End",
+            "description": "Scroll to top/bottom"
+          }
+        ]
+      }
+    ]
+  }
+]

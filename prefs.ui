@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+    <object class="GtkBox" id="main-container">
+        <property name="orientation">vertical</property>
+        <property name="spacing">6</property>
+        <child>
+            <object class="GtkStackSwitcher" id="stack_switcher">
+                <property name="stack">stack</property>
+            </object>
+        </child>
+        <child>
+            <object class="GtkStack" id="stack">
+                <property name="transition-type">slide-left-right</property>
+                <property name="transition-duration">250</property>
+                <child>
+                    <object class="GtkBox" id="data">
+                        <property name="orientation">vertical</property>
+                        <property name="hexpand">true</property>
+                        <property name="vexpand">true</property>
+                        <child>
+                            <object class="GtkBox">
+                                <property name="orientation">vertical</property>
+                                <property name="margin-bottom">8</property>
+                                <style> <class name="custom-box"/> </style>
+                                <child>
+                                    <object class="GtkBox">
+                                        <property name="orientation">horizontal</property>
+                                        <property name="margin-top">16</property>
+                                        <property name="margin-bottom">16</property>
+                                        <property name="margin-start">16</property>
+                                        <property name="margin-end">16</property>
+                                        <property name="halign">center</property>
+                                        <property name="valign">center</property>
+                                        <property name="spacing">64</property>
+                                        <child>
+                                            <object class="GtkLabel">
+                                                <property name="label">Load data from Json file</property>
+                                                <property name="xalign">0</property>
+                                                <property name="hexpand">true</property>
+                                            </object>
+                                        </child>
+                                        <child>
+                                            <object class="GtkButton" id="data_load_button">
+                                                <property name="label">Select File Me</property>
+                                                <property name="halign">center</property>
+                                                <property name="valign">center</property>
+                                            </object>
+                                        </child>
+                                    </object>
+                                </child>
+                            </object>
+                        </child>
+                        <child>
+                            <object class="GtkBox">
+                                <property name="orientation">vertical</property>
+                                <property name="margin-bottom">8</property>
+                                <style> <class name="custom-box"/> </style>
+                                <child>
+                                    <object class="GtkScrolledWindow" id="scrolled-window">
+                                        <property name="hexpand">true</property>
+                                        <property name="vexpand">true</property>
+                                        <property name="hscrollbar-policy">automatic</property>
+                                        <property name="margin-bottom">16</property>
+                                        <child>
+                                            <object class="GtkColumnView" id="items-treeview">
+                                                <property name="hexpand">true</property>
+                                                <property name="vexpand">true</property>
+                                            </object>
+                                        </child>
+                                    </object>
+                                </child>
+                                <child>
+                                    <object class="GtkBox">
+                                        <property name="orientation">horizontal</property>
+                                        <property name="margin-bottom">16</property>
+                                        <property name="spacing">64</property>
+                                        <property name="halign">center</property>
+                                        <property name="valign">center</property>
+                                        <property name="hexpand">false</property>
+                                        <child>
+                                            <object class="GtkButton" id="add_button">
+                                                <property name="label">Add New Row</property>
+                                            </object>
+                                        </child>
+                                        <child>
+                                            <object class="GtkButton" id="save_button">
+                                                <property name="label">Save Modifications</property>
+                                                <style> <class name="custom-button"/> </style>
+                                            </object>
+                                        </child>
+                                        <child>
+                                            <object class="GtkButton" id="delete_button">
+                                                <property name="label">Delete Selected Row</property>
+                                            </object>
+                                        </child>
+                                    </object>
+                                </child>
+                            </object>
+                        </child>
+                        <child>
+                            <object class="GtkBox">
+                                <property name="orientation">vertical</property>
+                                <style> <class name="custom-box"/> </style>
+                                <child>
+                                    <object class="GtkLabel">
+                                        <property name="label">Search:</property>
+                                        <style> <class name="custom-title"/> </style>
+                                        <property name="margin-bottom">8</property>
+                                    </object>
+                                </child>
+                                <child>
+                                    <object class="GtkBox">
+                                        <property name="orientation">horizontal</property>
+                                        <property name="margin-bottom">8</property>
+                                        <child>
+                                            <object class="GtkBox">
+                                                <property name="orientation">vertical</property>
+                                                <property name="hexpand">true</property>
+                                                <property name="margin-bottom">0</property>
+                                                <property name="margin-start">8</property>
+                                                <property name="spacing">8</property>
+                                                <child>
+                                                    <object class="GtkLabel">
+                                                        <property name="label">App</property>
+                                                        <property name="xalign">0.5</property>
+                                                    </object>
+                                                </child>
+                                                <child>
+                                                    <object class="GtkEntry" id="search_app">
+                                                        <property name="placeholder-text">Enter an app name...</property>
+                                                        <property name="hexpand">true</property>
+                                                        <property name="can-focus">true</property>
+                                                        <property name="editable">true</property>
+                                                        <style> <class name="custom-padding"/> </style>
+                                                    </object>
+                                                </child>
+                                            </object>
+                                        </child>
+                                        <child>
+                                            <object class="GtkBox">
+                                                <property name="orientation">vertical</property>
+                                                <property name="margin-bottom">0</property>
+                                                <property name="margin-start">8</property>
+                                                <property name="margin-end">8</property>
+                                                <property name="spacing">8</property>
+                                                <child>
+                                                    <object class="GtkLabel">
+                                                        <property name="label">Type</property>
+                                                        <property name="xalign">0.5</property>
+                                                        <property name="hexpand">true</property>
+                                                    </object>
+                                                </child>
+                                                <child>
+                                                    <object class="GtkEntry" id="search_type">
+                                                        <property name="placeholder-text">Enter a type name...</property>
+                                                        <property name="hexpand">true</property>
+                                                        <property name="can-focus">true</property>
+                                                        <property name="editable">true</property>
+                                                        <style> <class name="custom-padding"/> </style>
+                                                    </object>
+                                                </child>
+                                            </object>
+                                        </child>
+                                        <child>
+                                            <object class="GtkBox">
+                                                <property name="orientation">vertical</property>
+                                                <property name="margin-bottom">0</property>
+                                                <property name="margin-end">8</property>
+                                                <property name="spacing">8</property>
+                                                <child>
+                                                    <object class="GtkLabel">
+                                                        <property name="label">Shortcut</property>
+                                                        <property name="xalign">0.5</property>
+                                                        <property name="hexpand">true</property>
+                                                    </object>
+                                                </child>
+                                                <child>
+                                                    <object class="GtkEntry" id="search_shortcut">
+                                                        <property name="placeholder-text">Enter a shortcut name...</property>
+                                                        <property name="hexpand">true</property>
+                                                        <property name="can-focus">true</property>
+                                                        <property name="editable">true</property>
+                                                        <style> <class name="custom-padding"/> </style>
+                                                    </object>
+                                                </child>
+                                            </object>
+                                        </child>
+                                    </object>
+                                </child>
+                            </object>
+                        </child>
+                    </object>
+                </child>
+                <child>
+                    <object class="GtkBox" id="options">
+                        <property name="orientation">vertical</property>
+                        <property name="hexpand">true</property>
+                        <property name="vexpand">true</property>
+                        <child>
+                            <object class="GtkBox">
+                                <property name="orientation">vertical</property>
+                                <property name="spacing">16</property>
+                                <property name="margin_top">16</property>
+                                <property name="margin_bottom">16</property>
+                                <property name="margin_start">16</property>
+                                <property name="margin_end">16</property>
+                                <child>
+                                    <object class="GtkCheckButton" id="hide_icon">
+                                        <property name="label">Hide the icon</property>
+                                        <property name="halign">start</property>
+                                        <property name="active">false</property>
+                                    </object>
+                                </child>
+                                <child>
+                                    <object class="GtkBox">
+                                        <property name="orientation">horizontal</property>
+                                        <property name="spacing">16</property>
+                                        <property name="margin_top">16</property>
+                                        <property name="margin_bottom">16</property>
+                                        <property name="margin_start">16</property>
+                                        <property name="margin_end">16</property>
+                                        <child>
+                                            <object class="GtkLabel">
+                                                <property name="label">Number of columns</property>
+                                                <property name="halign">start</property>
+                                            </object>
+                                        </child>
+                                        <child>
+                                            <object class="GtkSpinButton" id="number_cols">
+                                                <property name="halign">start</property>
+                                                <property name="adjustment">
+                                                    <object class="GtkAdjustment">
+                                                        <property name="lower">1</property>
+                                                        <property name="upper">10</property>
+                                                        <property name="step_increment">1</property>
+                                                    </object>
+                                                </property>
+                                                <property name="numeric">true</property>
+                                            </object>
+                                        </child>
+                                    </object>
+                                </child>
+                                <child>
+                                    <object class="GtkBox">
+                                        <property name="orientation">horizontal</property>
+                                        <property name="spacing">16</property>
+                                        <property name="margin_top">16</property>
+                                        <property name="margin_bottom">16</property>
+                                        <property name="margin_start">16</property>
+                                        <property name="margin_end">16</property>
+                                        <child>
+                                            <object class="GtkLabel">
+                                                <property name="label">Adjust font size</property>
+                                                <property name="halign">start</property>
+                                            </object>
+                                        </child>
+                                        <child>
+                                            <object class="GtkSpinButton" id="font_size">
+                                                <property name="halign">start</property>
+                                                <property name="adjustment">
+                                                    <object class="GtkAdjustment">
+                                                        <property name="lower">10</property>
+                                                        <property name="upper">40</property>
+                                                        <property name="step_increment">1</property>
+                                                    </object>
+                                                </property>
+                                                <property name="numeric">true</property>
+                                            </object>
+                                        </child>
+                                    </object>
+                                </child>
+                            </object>
+                        </child>
+                    </object>
+                </child>
+            </object>
+        </child>
+    </object>
+</interface>
