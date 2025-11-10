@@ -2,7 +2,7 @@
   "uuid": "shortcuts-popup@slim8916.github.io",
   "name": "Shortcuts Popup",
   "description": "This shows a pop-up of useful keyboard shortcuts when Ctrl + Alt + Shift + O is pressed",
-  "version": 1,
-  "shell-version": ["42", "43", "44"],
+  "version": 2,
+  "shell-version": ["42", "43", "44", "45", "48"],
   "url": "https://github.com/slim8916/shortcuts-popup"
 }

@@ -1,13 +1,23 @@
-const { GObject, Gio, GLib } = imports.gi;
-const Me = imports.misc.extensionUtils.getCurrentExtension();
+import GObject from 'gi://GObject';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
 
+// Module-level variables that will be initialized
+let Me = null;
+let filesDir = null;
+export let shortcutssFilePath = null;
 
-const filesDir = GLib.build_filenamev([Me.path, '.files']);
-var shortcutssFilePath = GLib.build_filenamev([filesDir, 'shortcuts.json']);
+// Initialize function to be called by prefs.js
+export function initCommon(extension) {
+	Me = extension;
+	filesDir = GLib.build_filenamev([Me.path, 'files']);
+	shortcutssFilePath = GLib.build_filenamev([filesDir, 'shortcuts.json']);
+}
 
-var RowModel = GObject.type_from_name("RowModel");
-if (RowModel === null) {
-	RowModel = GObject.registerClass(
+// RowModel GObject class
+let _RowModel = GObject.type_from_name("RowModel");
+if (_RowModel === null) {
+	_RowModel = GObject.registerClass(
 		{
 			Properties: {
 				'app': GObject.ParamSpec.string('app', 'App', 'App Name', GObject.ParamFlags.READWRITE, ''),
@@ -20,9 +30,11 @@ if (RowModel === null) {
 	);
 }
 
-var longestEntry = { app: '', type: '', shortcut: '', description: '' };
+export const RowModel = _RowModel;
 
-var Formatters = {
+export let longestEntry = { app: '', type: '', shortcut: '', description: '' };
+
+export const Formatters = {
 	formatShortcut: (text) => text.toLowerCase().replace(/([^a-zA-Z0-9\s])/g, " $1 ")
 			.replace(/\b\w/g, (char) => char.toUpperCase()).replace(/\s+/g, ' ').trim(),
 	formatText: (text) =>
@@ -30,28 +42,29 @@ var Formatters = {
 			.replace(/\s+([)\]},.:;?¿!])/g, '$1').replace(/^./, (char) => char.toUpperCase()).replace(/\s+/g, ' ').trim()
 };
 
-function compareRows(a, b) {
+export function compareRows(a, b) {
 	let cmp = a.app.localeCompare(b.app);
 	if (cmp === 0) cmp = a.type.localeCompare(b.type);
 	if (cmp === 0) cmp = a.shortcut.localeCompare(b.shortcut);
 	return cmp;
 }
 
-function updateLongestEntry(nameApp, nameType, shortcut, description) {
+export function updateLongestEntry(nameApp, nameType, shortcut, description) {
 	if (nameApp.length > longestEntry.app.length) longestEntry.app = nameApp;
 	if (nameType.length > longestEntry.type.length) longestEntry.type = nameType;
 	if (shortcut.length > longestEntry.shortcut.length) longestEntry.shortcut = shortcut;
 	if (description.length > longestEntry.description.length) longestEntry.description = description;
 }
 
-function loadListStore(listStore, file = Gio.File.new_for_path(shortcutssFilePath)) {
-	let jsonData=readShortcutsJson(file);
+// Exported function used by prefs.js to load shortcuts data into the list store
+export function loadListStore(listStore, file = Gio.File.new_for_path(shortcutssFilePath)) {
+	const jsonData=readShortcutsJson(file);
 	if (typeof jsonData === 'string') return jsonData;
 
-	let existingShortcuts = new Set();
+	const existingShortcuts = new Set();
 	// To check for duplicates, we can use a Set to store existing shortcuts
 	// for (let i = 0; i < listStore.get_n_items(); i++) existingShortcuts.add(Formatters.formatShortcut(listStore.get_item(i).shortcut));
-	let skippedItems = [];
+	const skippedItems = [];
 
 	const listItems = jsonData.flatMap(app => app.types.flatMap(type => type.shortcuts.map(shortcut => ({
 		app: app.name,
@@ -62,19 +75,19 @@ function loadListStore(listStore, file = Gio.File.new_for_path(shortcutssFilePat
 	)));
 
 	listItems.forEach(item => {
-		let NameApp = Formatters.formatText(item.app);
-		let NameType = Formatters.formatText(item.type);
-		let formattedShortcut = Formatters.formatShortcut(item.shortcut);
-		let formattedDescription = Formatters.formatText(item.description);
-		let skipReasons = [];
+		const NameApp = Formatters.formatText(item.app);
+		const NameType = Formatters.formatText(item.type);
+		const formattedShortcut = Formatters.formatShortcut(item.shortcut);
+		const formattedDescription = Formatters.formatText(item.description);
+		const skipReasons = [];
 		if (!NameApp) skipReasons.push('Empty app name');
 		if (!NameType) skipReasons.push('Empty type name');
 		if (existingShortcuts.has(formattedShortcut)) skipReasons.push('Duplicate shortcut');
-		let skipMsg = skipReasons.join(", ");
+		const skipMsg = skipReasons.join(", ");
 		if (skipMsg) {
 			skippedItems.push(`${JSON.stringify(item).replace(/"(\w+)"\s*:/g, '$1: ').replace(/,(\S)/g, ", $1")} - Reason: ${skipMsg}.`);
 		} else {
-			let newItem = new RowModel({
+			const newItem = new RowModel({
 				app: NameApp,
 				type: NameType,
 				shortcut: formattedShortcut,
@@ -89,7 +102,7 @@ function loadListStore(listStore, file = Gio.File.new_for_path(shortcutssFilePat
 	return skippedItems;
 }
 
-function readShortcutsJson(file = Gio.File.new_for_path(shortcutssFilePath)) {
+export function readShortcutsJson(file = Gio.File.new_for_path(shortcutssFilePath)) {
     if (!file.query_exists(null)) return "File does not exist";
     const [success, contents] = file.load_contents(null);
     if (!success) return "Failed to load file contents";
