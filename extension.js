@@ -12,81 +12,79 @@ import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
 
 import * as Common from './common.js';
 
-const StatusIcon = GObject.registerClass(
-	class StatusIcon extends PanelMenu.Button {
-		_init(extension, isIconHidden, filesDir) {
-			super._init(0.0, 'Status Icon');
-			this.extension = extension;
-			if (!isIconHidden) {
-				const icon = new St.Icon({ gicon: Gio.icon_new_for_string(GLib.build_filenamev([filesDir, 'icon.png'])) });
-				this.add_child(icon);
-			}
-			this.connect('button-press-event', () => this.extension.openLayoutShortcuts());
-		}
-	}
-);
-
-const FullscreenWidget = GObject.registerClass(
-	class FullscreenWidget extends St.Widget {
-		_init(extension) {
-			super._init({
-				style_class: 'fullscreen-overlay',
-				reactive: true,
-				can_focus: true,
-				track_hover: true,
-				layout_manager: new Clutter.BinLayout(),
-			});
-			this.extension = extension;
-			this.set_style('background-color: rgba(0,0,0,0.8); pointer-events: all; z-index: 99999;');
-			const monitor = Main.layoutManager.monitors[0];
-			this.set_size(monitor.width, monitor.height);
-			this.set_position(monitor.x, monitor.y);
-			this.scrollView = new St.ScrollView({
-				hscrollbar_policy: St.PolicyType.NEVER, vscrollbar_policy: St.PolicyType.NEVER,
-				x_expand: true, y_expand: true
-			});
-			if (!this.extension.firstLaunch && !this.extension.parentBox.isError) {
-				try {
-					this.extension.resetSearchEntry();
-				} catch (e) {
-					log(e.message);
+export default class ShortcutsPopupExtension extends Extension {
+	// Define GObject classes as static properties to avoid module-level state
+	static StatusIcon = GObject.registerClass(
+		class StatusIcon extends PanelMenu.Button {
+			_init(extension, isIconHidden, filesDir) {
+				super._init(0.0, 'Status Icon');
+				this.extension = extension;
+				if (!isIconHidden) {
+					const icon = new St.Icon({ gicon: Gio.icon_new_for_string(GLib.build_filenamev([filesDir, 'icon.png'])) });
+					this.add_child(icon);
 				}
+				this.connect('button-press-event', () => this.extension.openLayoutShortcuts());
 			}
-			this.scrollView.set_child(this.extension.parentBox);
-			this.add_child(this.scrollView);
-			if (this.extension.firstLaunch) this.extension.buildLayout(monitor.width);
-			this.connect('button-press-event', () => {
-				this.scrollView.set_child(null);
-				this.extension.fullscreenOverlay.destroy();
-				this.extension.fullscreenOverlay = null;
-				return Clutter.EVENT_STOP;
-			});
-			this.connect("key-press-event", (_, event) => {
-				if (event.get_key_symbol() === Clutter.KEY_Escape) {
+		}
+	);
+
+	static FullscreenWidget = GObject.registerClass(
+		class FullscreenWidget extends St.Widget {
+			_init(extension) {
+				super._init({
+					style_class: 'fullscreen-overlay',
+					reactive: true,
+					can_focus: true,
+					track_hover: true,
+					layout_manager: new Clutter.BinLayout(),
+				});
+				this.extension = extension;
+				this.set_style('background-color: rgba(0,0,0,0.8); pointer-events: all; z-index: 99999;');
+				const monitor = Main.layoutManager.monitors[0];
+				this.set_size(monitor.width, monitor.height);
+				this.set_position(monitor.x, monitor.y);
+				this.scrollView = new St.ScrollView({
+					hscrollbar_policy: St.PolicyType.NEVER, vscrollbar_policy: St.PolicyType.NEVER,
+					x_expand: true, y_expand: true
+				});
+				if (!this.extension.firstLaunch && !this.extension.parentBox.isError) {
+					try {
+						this.extension.resetSearchEntry();
+					} catch (e) {
+						log(e.message);
+					}
+				}
+				this.scrollView.set_child(this.extension.parentBox);
+				this.add_child(this.scrollView);
+				if (this.extension.firstLaunch) this.extension.buildLayout(monitor.width);
+				this.connect('button-press-event', () => {
 					this.scrollView.set_child(null);
 					this.extension.fullscreenOverlay.destroy();
 					this.extension.fullscreenOverlay = null;
 					return Clutter.EVENT_STOP;
-				}
-				return Clutter.EVENT_PROPAGATE;
-			});
-			this.grab_key_focus();
-			if (this.extension.firstLaunch) {
-				this.connect('notify::allocation', () => {
-					this.extension.updateShortcutsByRanks(this.extension.indicesToUpdate);
-					const columns = this.extension.createColumns();
-					this.extension.createComponents(columns);
-					this.extension.firstLaunch = false;
-					this.extension.freeMemory();
 				});
+				this.connect("key-press-event", (_, event) => {
+					if (event.get_key_symbol() === Clutter.KEY_Escape) {
+						this.scrollView.set_child(null);
+						this.extension.fullscreenOverlay.destroy();
+						this.extension.fullscreenOverlay = null;
+						return Clutter.EVENT_STOP;
+					}
+					return Clutter.EVENT_PROPAGATE;
+				});
+				this.grab_key_focus();
+				if (this.extension.firstLaunch) {
+					this.connect('notify::allocation', () => {
+						this.extension.updateShortcutsByRanks(this.extension.indicesToUpdate);
+						const columns = this.extension.createColumns();
+						this.extension.createComponents(columns);
+						this.extension.firstLaunch = false;
+						this.extension.freeMemory();
+					});
+				}
 			}
 		}
-	}
-);
-
-
-
-export default class ShortcutsPopupExtension extends Extension {
+	);
 	constructor(metadata) {
 		super(metadata);
 		// No initialization here per EGO review guidelines

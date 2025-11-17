@@ -35,7 +35,7 @@ var PrefsWidget = GObject.registerClass(
 			this.scrolledWindow = this.builder.get_object('scrolled-window');
 			this.connect('realize', () => {
 				const display = Gdk.Display.get_default();
-				const monitor = display.get_monitor_at_surface(this.window.get_root());
+				const monitor = display.get_monitor_at_surface(this.window.get_surface());
 				const geometry = monitor.get_geometry();
 				this.columnView.totalWidth = Math.ceil(geometry.width * 0.7);
 				this.scrolledWindow.set_size_request(this.columnView.totalWidth, -1);
