@@ -14,7 +14,6 @@ export function initCommon(extension) {
 	shortcutssFilePath = GLib.build_filenamev([filesDir, 'shortcuts.json']);
 }
 
-// Cleanup function to be called on disable or window close
 export function uninit() {
 	Me = null;
 	filesDir = null;

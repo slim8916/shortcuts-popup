@@ -45,12 +45,9 @@ const FullscreenWidget = GObject.registerClass(
 				hscrollbar_policy: St.PolicyType.NEVER, vscrollbar_policy: St.PolicyType.NEVER,
 				x_expand: true, y_expand: true
 			});
-			if (this.extension.parentBox === null) {
-				this.extension.parentBox = new St.BoxLayout({ vertical: true, x_expand: true, });
-				this.extension.resetlayout().catch(e => log("Error in resetlayout: " + e.message));
-			} else if (!this.extension.firstLaunch && !this.extension.parentBox.isError) {
+			if (!this.extension.firstLaunch && !this.extension.parentBox.isError) {
 				try {
-					this.extension.parentBox.resetSearchEntry();
+					this.extension.resetSearchEntry();
 				} catch (e) {
 					log(e.message);
 				}
@@ -109,6 +106,7 @@ export default class ShortcutsPopupExtension extends Extension {
 		this.indicesToUpdate = [];
 		this.firstLaunch = true;
 		this.parentBox = null;
+		this.searchEntry = null;
 		this.numberCols = this.settings.get_int('number-cols');
 		this.isIconHidden = this.settings.get_boolean('hide-icon');
 		this.fileMonitor = null;
@@ -205,6 +203,7 @@ export default class ShortcutsPopupExtension extends Extension {
 		// Null out all instance variables
 		this.indicesToUpdate = null;
 		this.firstLaunch = null;
+		this.searchEntry = null;
 		this.numberCols = null;
 		this.isIconHidden = null;
 		this.colors = null;
@@ -222,6 +221,16 @@ export default class ShortcutsPopupExtension extends Extension {
 			Main.uiGroup.add_child(this.fullscreenOverlay);
 			Main.pushModal(this.fullscreenOverlay);
 			this.fullscreenOverlay.grab_key_focus();
+		}
+	}
+
+	resetSearchEntry() {
+		if (this.searchEntry) {
+			this.searchEntry.set_text('');
+			GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
+				this.searchEntry.grab_key_focus();
+				return GLib.SOURCE_REMOVE;
+			});
 		}
 	}
 
@@ -379,27 +388,20 @@ export default class ShortcutsPopupExtension extends Extension {
 		this.parentBox.remove_all_children();
 		this.parentBox.isError = false;
 		const rowSearch = new St.BoxLayout({ vertical: false, x_expand: false, x_align: Clutter.ActorAlign.CENTER, style: `padding: 8px;`, });
-		const searchEntry = new St.Entry({
+		this.searchEntry = new St.Entry({
 			x_expand: false, hint_text: "Search for...", can_focus: true,
 			style: `background-color: black; padding: 16px; font-weight: bold; font-size: 20px; width: 400px;`
 		});
-		rowSearch.add_child(searchEntry);
-		this.parentBox.resetSearchEntry = function () {
-			searchEntry.set_text('');
-			GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
-				searchEntry.grab_key_focus();
-				return GLib.SOURCE_REMOVE;
-			});
-		};
-		this.parentBox.resetSearchEntry();
-		searchEntry.connect("key-press-event", (_actor, event) => {
+		rowSearch.add_child(this.searchEntry);
+		this.resetSearchEntry();
+		this.searchEntry.connect("key-press-event", (_actor, event) => {
 			const keyval = event.get_key_symbol();
 			const keyString = getKeyString(keyval);
 
 			if (keyString) {
-				const oldText = searchEntry.get_text();
+				const oldText = this.searchEntry.get_text();
 				if (!oldText.includes(keyString)) {
-					searchEntry.set_text(oldText + (oldText ? " " : "") + keyString);
+					this.searchEntry.set_text(oldText + (oldText ? " " : "") + keyString);
 				}
 			}
 		});
@@ -418,8 +420,8 @@ export default class ShortcutsPopupExtension extends Extension {
 					return null;
 			}
 		};
-		searchEntry.clutter_text.connect("text-changed", () => {
-			const searchTerms = searchEntry.get_text().trim().replace(/\s+/g, ' ').toLowerCase().split(/\s+/);
+		this.searchEntry.clutter_text.connect("text-changed", () => {
+			const searchTerms = this.searchEntry.get_text().trim().replace(/\s+/g, ' ').toLowerCase().split(/\s+/);
 			shortcutsBox.get_children().forEach(columnBox => {
 				columnBox.get_children().forEach(actor => {
 					if (!(actor instanceof St.BoxLayout) || !actor.vertical) return;
