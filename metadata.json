@@ -3,6 +3,7 @@
   "name": "Shortcuts Popup",
   "description": "This shows a pop-up of useful keyboard shortcuts when Ctrl + Alt + Shift + O is pressed",
   "version": 2,
-  "shell-version": ["42", "43", "44", "45", "48"],
-  "url": "https://github.com/slim8916/shortcuts-popup"
+  "shell-version": ["45", "48"],
+  "url": "https://github.com/slim8916/shortcuts-popup",
+  "settings-schema": "org.gnome.shell.extensions.shortcuts-popup"
 }

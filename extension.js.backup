@@ -12,23 +12,31 @@ import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
 
 import * as Common from './common.js';
 
+// Constants
+const SETTINGS_SCHEMA = 'org.gnome.shell.extensions.shortcuts-popup';
+
+
+
+
+// Module-level reference to the current extension instance
+let extension = null;
+
 const StatusIcon = GObject.registerClass(
 	class StatusIcon extends PanelMenu.Button {
-		_init(extension, isIconHidden, filesDir) {
+		_init(isIconHidden, filesDir) {
 			super._init(0.0, 'Status Icon');
-			this.extension = extension;
 			if (!isIconHidden) {
 				const icon = new St.Icon({ gicon: Gio.icon_new_for_string(GLib.build_filenamev([filesDir, 'icon.png'])) });
 				this.add_child(icon);
 			}
-			this.connect('button-press-event', () => this.extension.openLayoutShortcuts());
+			this.connect('button-press-event', () => extension.openLayoutShortcuts());
 		}
 	}
 );
 
 const FullscreenWidget = GObject.registerClass(
 	class FullscreenWidget extends St.Widget {
-		_init(extension) {
+		_init() {
 			super._init({
 				style_class: 'fullscreen-overlay',
 				reactive: true,
@@ -36,7 +44,6 @@ const FullscreenWidget = GObject.registerClass(
 				track_hover: true,
 				layout_manager: new Clutter.BinLayout(),
 			});
-			this.extension = extension;
 			this.set_style('background-color: rgba(0,0,0,0.8); pointer-events: all; z-index: 99999;');
 			const monitor = Main.layoutManager.monitors[0];
 			this.set_size(monitor.width, monitor.height);
@@ -45,42 +52,42 @@ const FullscreenWidget = GObject.registerClass(
 				hscrollbar_policy: St.PolicyType.NEVER, vscrollbar_policy: St.PolicyType.NEVER,
 				x_expand: true, y_expand: true
 			});
-			if (this.extension.parentBox === null) {
-				this.extension.parentBox = new St.BoxLayout({ vertical: true, x_expand: true, });
-				this.extension.resetlayout().catch(e => log("Error in resetlayout: " + e.message));
-			} else if (!this.extension.firstLaunch && !this.extension.parentBox.isError) {
+			if (extension.parentBox === null) {
+				extension.parentBox = new St.BoxLayout({ vertical: true, x_expand: true, });
+				extension.resetlayout();
+			} else if (!extension.firstLaunch && !extension.parentBox.isError) {
 				try {
-					this.extension.parentBox.resetSearchEntry();
+					extension.parentBox.resetSearchEntry();
 				} catch (e) {
 					log(e.message);
 				}
 			}
-			this.scrollView.set_child(this.extension.parentBox);
+			this.scrollView.set_child(extension.parentBox);
 			this.add_child(this.scrollView);
-			if (this.extension.firstLaunch) this.extension.buildLayout(monitor.width);
+			if (extension.firstLaunch) extension.buildLayout(monitor.width);
 			this.connect('button-press-event', () => {
 				this.scrollView.set_child(null);
-				this.extension.fullscreenOverlay.destroy();
-				this.extension.fullscreenOverlay = null;
+				extension.fullscreenOverlay.destroy();
+				extension.fullscreenOverlay = null;
 				return Clutter.EVENT_STOP;
 			});
 			this.connect("key-press-event", (_, event) => {
 				if (event.get_key_symbol() === Clutter.KEY_Escape) {
 					this.scrollView.set_child(null);
-					this.extension.fullscreenOverlay.destroy();
-					this.extension.fullscreenOverlay = null;
+					extension.fullscreenOverlay.destroy();
+					extension.fullscreenOverlay = null;
 					return Clutter.EVENT_STOP;
 				}
 				return Clutter.EVENT_PROPAGATE;
 			});
 			this.grab_key_focus();
-			if (this.extension.firstLaunch) {
+			if (extension.firstLaunch) {
 				this.connect('notify::allocation', () => {
-					this.extension.updateShortcutsByRanks(this.extension.indicesToUpdate);
-					const columns = this.extension.createColumns();
-					this.extension.createComponents(columns);
-					this.extension.firstLaunch = false;
-					this.extension.freeMemory();
+					extension.updateShortcutsByRanks(extension.indicesToUpdate);
+					const columns = extension.createColumns();
+					extension.createComponents(columns);
+					extension.firstLaunch = false;
+					extension.freeMemory();
 				});
 			}
 		}
@@ -103,7 +110,7 @@ export default class ShortcutsPopupExtension extends Extension {
 		this.filesDir = GLib.build_filenamev([this.path, 'files']);
 
 		// Create settings instance (must be done in enable(), not at module level)
-		this.settings = this.getSettings();
+		this.settings = this.getSettings(SETTINGS_SCHEMA);
 
 		// Initialize instance variables
 		this.indicesToUpdate = [];
@@ -119,6 +126,9 @@ export default class ShortcutsPopupExtension extends Extension {
 		this.statusIcon = null;
 		this.fullscreenOverlay = null;
 
+		// Set module-level extension reference for use by other classes
+		extension = this;
+
 		// Set up file monitoring
 		const shortcutsJsonFile = Gio.File.new_for_path(GLib.build_filenamev([this.filesDir, 'shortcuts.json']));
 		try {
@@ -128,7 +138,7 @@ export default class ShortcutsPopupExtension extends Extension {
 					case Gio.FileMonitorEvent.CREATED:
 					case Gio.FileMonitorEvent.CHANGED:
 					case Gio.FileMonitorEvent.DELETED:
-						this.resetlayout().catch(e => log("Error in resetlayout: " + e.message));
+						this.resetlayout();
 						break;
 				}
 			});
@@ -138,24 +148,24 @@ export default class ShortcutsPopupExtension extends Extension {
 
 		// Initialize parent box and layout
 		this.parentBox = new St.BoxLayout({ vertical: true, x_expand: true, });
-		this.resetlayout().catch(e => log("Error in resetlayout: " + e.message));
+		this.resetlayout();
 
 		// Connect settings change handlers
 		this.settings.connect('changed::hide-icon', () => {
 			this.isIconHidden = this.settings.get_boolean('hide-icon');
-			this.resetlayout().catch(e => log("Error in resetlayout: " + e.message));
+			this.resetlayout();
 		});
 		this.settings.connect('changed::number-cols', () => {
 			this.numberCols = this.settings.get_int('number-cols');
-			this.resetlayout().catch(e => log("Error in resetlayout: " + e.message));
+			this.resetlayout();
 		});
 		this.settings.connect('changed::font-size', () => {
 			this.style.shortcut.entryFontSize = this.settings.get_int('font-size');
-			this.resetlayout().catch(e => log("Error in resetlayout: " + e.message));
+			this.resetlayout();
 		});
 
 		// Create status icon and add to panel
-		this.statusIcon = new StatusIcon(this, this.isIconHidden, this.filesDir);
+		this.statusIcon = new StatusIcon(this.isIconHidden, this.filesDir);
 		Main.panel.addToStatusArea('status-icon', this.statusIcon);
 
 		// Add keybinding
@@ -212,22 +222,22 @@ export default class ShortcutsPopupExtension extends Extension {
 		this.processedJson = null;
 		this.style = null;
 
-		// Cleanup common module
-		Common.uninit();
+		// Clear module-level extension reference
+		extension = null;
 	}
 
 	openLayoutShortcuts() {
 		if (!this.fullscreenOverlay) {
-			this.fullscreenOverlay = new FullscreenWidget(this);
+			this.fullscreenOverlay = new FullscreenWidget();
 			Main.uiGroup.add_child(this.fullscreenOverlay);
 			Main.pushModal(this.fullscreenOverlay);
 			this.fullscreenOverlay.grab_key_focus();
 		}
 	}
 
-	async resetlayout() {
+	resetlayout() {
 		this.firstLaunch = true;
-		this.resultReadJsonFile = await Common.readShortcutsJson();
+		this.resultReadJsonFile = Common.readShortcutsJson();
 		this.colors = this.generateDarkSpectrumColorsHex(this.resultReadJsonFile.length);
 	}
 

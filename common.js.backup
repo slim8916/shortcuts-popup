@@ -14,26 +14,23 @@ export function initCommon(extension) {
 	shortcutssFilePath = GLib.build_filenamev([filesDir, 'shortcuts.json']);
 }
 
-// Cleanup function to be called on disable or window close
-export function uninit() {
-	Me = null;
-	filesDir = null;
-	shortcutssFilePath = null;
-	longestEntry = { app: '', type: '', shortcut: '', description: '' };
+// RowModel GObject class
+let _RowModel = GObject.type_from_name("RowModel");
+if (_RowModel === null) {
+	_RowModel = GObject.registerClass(
+		{
+			Properties: {
+				'app': GObject.ParamSpec.string('app', 'App', 'App Name', GObject.ParamFlags.READWRITE, ''),
+				'type': GObject.ParamSpec.string('type', 'Type', 'Type of Shortcut', GObject.ParamFlags.READWRITE, ''),
+				'shortcut': GObject.ParamSpec.string('shortcut', 'Shortcut', 'Keyboard Shortcut', GObject.ParamFlags.READWRITE, ''),
+				'description': GObject.ParamSpec.string('description', 'Description', 'Shortcut Description', GObject.ParamFlags.READWRITE, ''),
+			},
+		},
+		class RowModel extends GObject.Object { }
+	);
 }
 
-// RowModel GObject class
-export const RowModel = GObject.registerClass(
-	{
-		Properties: {
-			'app': GObject.ParamSpec.string('app', 'App', 'App Name', GObject.ParamFlags.READWRITE, ''),
-			'type': GObject.ParamSpec.string('type', 'Type', 'Type of Shortcut', GObject.ParamFlags.READWRITE, ''),
-			'shortcut': GObject.ParamSpec.string('shortcut', 'Shortcut', 'Keyboard Shortcut', GObject.ParamFlags.READWRITE, ''),
-			'description': GObject.ParamSpec.string('description', 'Description', 'Shortcut Description', GObject.ParamFlags.READWRITE, ''),
-		},
-	},
-	class RowModel extends GObject.Object { }
-);
+export const RowModel = _RowModel;
 
 export let longestEntry = { app: '', type: '', shortcut: '', description: '' };
 
@@ -60,8 +57,8 @@ export function updateLongestEntry(nameApp, nameType, shortcut, description) {
 }
 
 // Exported function used by prefs.js to load shortcuts data into the list store
-export async function loadListStore(listStore, file = Gio.File.new_for_path(shortcutssFilePath)) {
-	const jsonData = await readShortcutsJson(file);
+export function loadListStore(listStore, file = Gio.File.new_for_path(shortcutssFilePath)) {
+	const jsonData=readShortcutsJson(file);
 	if (typeof jsonData === 'string') return jsonData;
 
 	const existingShortcuts = new Set();
@@ -105,39 +102,21 @@ export async function loadListStore(listStore, file = Gio.File.new_for_path(shor
 	return skippedItems;
 }
 
-export async function readShortcutsJson(file = Gio.File.new_for_path(shortcutssFilePath)) {
+export function readShortcutsJson(file = Gio.File.new_for_path(shortcutssFilePath)) {
     if (!file.query_exists(null)) return "File does not exist";
-
+    const [success, contents] = file.load_contents(null);
+    if (!success) return "Failed to load file contents";
+    const jsonString = new TextDecoder().decode(contents);
+    let jsonData;
     try {
-        const [contents] = await new Promise((resolve, reject) => {
-            file.load_contents_async(null, (source, result) => {
-                try {
-                    const [success, contents] = source.load_contents_finish(result);
-                    if (success) {
-                        resolve([contents]);
-                    } else {
-                        reject(new Error("Failed to load file contents"));
-                    }
-                } catch (e) {
-                    reject(e);
-                }
-            });
-        });
-
-        const jsonString = new TextDecoder().decode(contents);
-        let jsonData;
-        try {
-            jsonData = JSON.parse(jsonString);
-        } catch (e) {
-            return e.message;
-        }
-        if (!jsonData) return "JSON data is empty or null";
-        const validationError = validateStructure(jsonData);
-        if (validationError) return "JSON validation failed - " + validationError;
-        return jsonData;
+        jsonData = JSON.parse(jsonString);
     } catch (e) {
         return e.message;
     }
+    if (!jsonData) return "JSON data is empty or null";
+    const validationError = validateStructure(jsonData);
+    if (validationError) return "JSON validation failed - " + validationError;
+    return jsonData;
 }
 
 function validateStructure(data) {

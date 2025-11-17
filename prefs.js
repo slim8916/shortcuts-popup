@@ -13,14 +13,14 @@ import * as Common from './common.js';
 
 
 const padding = 5;
-const SETTINGS_SCHEMA = 'org.gnome.shell.extensions.shortcuts-popup';
 
 var PrefsWidget = GObject.registerClass(
 	class PrefsWidget extends Gtk.Box {
-		_init(settings, extension) {
+		_init(settings, extension, window) {
 			super._init({ orientation: Gtk.Orientation.VERTICAL, spacing: 10 });
 			this.settings = settings;
 			this.extension = extension;
+			this.window = window;
 			this.builder = new Gtk.Builder();
 			this.builder.add_from_file(this.extension.dir.get_path() + '/prefs.ui');
 			const mainContainer = this.builder.get_object('main-container');
@@ -34,13 +34,12 @@ var PrefsWidget = GObject.registerClass(
 			stack.set_visible_child_name("data");
 			this.scrolledWindow = this.builder.get_object('scrolled-window');
 			this.connect('realize', () => {
-				const root = this.get_root();
 				const display = Gdk.Display.get_default();
-				const monitor = display.get_monitor_at_surface(root.get_surface());
+				const monitor = display.get_monitor_at_surface(this.window.get_surface());
 				const geometry = monitor.get_geometry();
 				this.columnView.totalWidth = Math.ceil(geometry.width * 0.7);
 				this.scrolledWindow.set_size_request(this.columnView.totalWidth, -1);
-				root.set_default_size(-1, Math.ceil(geometry.height * .7));
+				this.window.set_default_size(-1, Math.ceil(geometry.height * .7));
 				this._computeWidthColumn(this.columnView);
 			})
 			const isIconHidden = this.builder.get_object('hide_icon');
@@ -181,11 +180,11 @@ var PrefsWidget = GObject.registerClass(
 			return count;
 		}
 
-		_setupColumnView() {
+		async _setupColumnView() {
 			this.columnView = this.builder.get_object('items-treeview');
 			this.columnView.set_reorderable(false);
 			const listStore = new Gio.ListStore({ item_type: Common.RowModel });
-			Common.loadListStore(listStore);
+			await Common.loadListStore(listStore);
 			const filterListModel = new Gtk.FilterListModel({ model: listStore });
 			const filter = new Gtk.CustomFilter();
 			const filterCondition = { app: '', type: '', shortcut: '' };
@@ -337,7 +336,7 @@ var PrefsWidget = GObject.registerClass(
 			});
 			saveButton.connect('clicked', () => {
 				const resWrite=this._writeShortcutsJson(listStore);
-				this._showSkippedItemsDialog(resWrite, this.get_root());
+				this._showSkippedItemsDialog(resWrite, this.window);
 				this._computeWidthColumn(this.columnView);
 			});
 			deleteButton.connect('clicked', () => {
@@ -359,7 +358,7 @@ var PrefsWidget = GObject.registerClass(
 					title: "Read Json File",
 					action: Gtk.FileChooserAction.OPEN,
 					modal: true,
-					transient_for: this.get_root()
+					transient_for: this.window
 				});
 				fileChooser.add_button("_Cancel", Gtk.ResponseType.CANCEL);
 				fileChooser.add_button("_Open", Gtk.ResponseType.ACCEPT);
@@ -367,9 +366,9 @@ var PrefsWidget = GObject.registerClass(
 				jsonFilter.add_mime_type("application/json");
 				jsonFilter.add_pattern("*.json");
 				fileChooser.set_filter(jsonFilter);
-				fileChooser.connect("response", (_, responseId) => {
+				fileChooser.connect("response", async (_, responseId) => {
 					if (responseId === Gtk.ResponseType.ACCEPT) {
-						const result = Common.loadListStore(listStore, fileChooser.get_file());
+						const result = await Common.loadListStore(listStore, fileChooser.get_file());
 						if (typeof result === "string") {
 							const warningDialog = new Gtk.MessageDialog({
 								transient_for: fileChooser,
@@ -389,7 +388,7 @@ var PrefsWidget = GObject.registerClass(
 							fileChooser.close();
 							fileChooser.destroy();
 							this._computeWidthColumn(this.columnView);
-							if (Array.isArray(result)) this._showSkippedItemsDialog(result, this.get_root());
+							if (Array.isArray(result)) this._showSkippedItemsDialog(result, this.window);
 						}
 					} else if (responseId === Gtk.ResponseType.CANCEL) {
 						fileChooser.close();
@@ -408,8 +407,13 @@ export default class ShortcutsPopupPreferences extends ExtensionPreferences {
 		// Initialize common module with extension info
 		Common.initCommon(this);
 
+		// Cleanup on window close
+		window.connect('close-request', () => {
+			Common.uninit();
+		});
+
 		// Get settings
-		const settings = this.getSettings(SETTINGS_SCHEMA);
+		const settings = this.getSettings();
 
 		// Load CSS styles
 		const styleProvider = new Gtk.CssProvider();
@@ -421,7 +425,7 @@ export default class ShortcutsPopupPreferences extends ExtensionPreferences {
 		);
 
 		// Create preferences widget
-		const prefsWidget = new PrefsWidget(settings, this);
+		const prefsWidget = new PrefsWidget(settings, this, window);
 
 		// Create an AdwPreferencesPage and add our custom widget
 		const page = new Adw.PreferencesPage();
