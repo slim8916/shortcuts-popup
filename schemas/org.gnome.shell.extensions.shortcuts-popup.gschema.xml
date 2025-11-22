@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+	<schema id="org.gnome.shell.extensions.shortcuts-popup" path="/org/gnome/shell/extensions/shortcuts-popup/">
+		<key name="hide-icon" type="b">
+			<default>false</default>
+			<summary>Hide the icon</summary>
+		</key>
+		<key name="number-cols" type="i">
+			<default>3</default>
+			<summary>Number of columns</summary>
+		</key>
+		<key name="font-size" type="i">
+			<default>16</default>
+			<summary>Adjust font size</summary>
+		</key>
+
+		<key name="shortcuts-toggle-overview" type="as">
+			<default><![CDATA[['<Ctrl><Alt><Shift>o']]]></default>
+			<summary>Hotkey to toggle the shortcuts overview</summary>
+			<description>Hotkey can be changed If Ctrl+Alt+Super+S is already used</description>
+		</key>
+	</schema>
+</schemalist>

@@ -1,0 +1,64 @@
+[
+    {
+      "name": "App1",
+      "types": [
+        {
+          "name": "Type1",
+          "shortcuts": [
+            {
+              "key": "Ctrl+S",
+              "description": "Save the current document"
+            },
+            {
+              "key": "Ctrl+P",
+              "description": "Print the current document"
+            }
+          ]
+        },
+        {
+          "name": "Type2",
+          "shortcuts": [
+            {
+              "key": "Ctrl+Z",
+              "description": "Undo the last action"
+            },
+            {
+              "key": "Ctrl+Y",
+              "description": "Redo the last action"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "App2",
+      "types": [
+        {
+          "name": "TypeA",
+          "shortcuts": [
+            {
+              "key": "Cmd+S",
+              "description": "Save the current document"
+            },
+            {
+              "key": "Cmd+P",
+              "description": "Print the current document"
+            }
+          ]
+        },
+        {
+          "name": "TypeB",
+          "shortcuts": [
+            {
+              "key": "Cmd+Z",
+              "description": "Undo the last action"
+            },
+            {
+              "key": "Cmd+Shift+Z",
+              "description": "Redo the last action"
+            }
+          ]
+        }
+      ]
+    }
+  ]
